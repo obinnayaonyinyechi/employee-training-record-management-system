@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | Training Hub{% endblock %}
+
+{% block page_heading %}Dashboard{% endblock %}
+
+{% block content %}
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-label">Total Training</div>
+        <div class="stat-number">{{ total_records }}</div>
+        <div class="stat-note">All training records</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Completed</div>
+        <div class="stat-number">{{ completed_records }}</div>
+        <div class="stat-note">Completed programmes</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Ongoing</div>
+        <div class="stat-number">{{ ongoing_records }}</div>
+        <div class="stat-note">Currently in progress</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Planned</div>
+        <div class="stat-number">{{ planned_records }}</div>
+        <div class="stat-note">Upcoming training</div>
+    </div>
+
+</section>
+
+<section class="panel">
+
+    <div class="panel-header">
+        <div>
+            <h2>Recent Training Records</h2>
+            <p>Latest employee training activities</p>
+        </div>
+
+        <a href="{% url 'training_list' %}" class="btn btn-outline">
+            View All
+        </a>
+    </div>
+
+    {% if recent_records %}
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Training Title</th>
+                    <th>Employee</th>
+                    <th>Date</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for record in recent_records %}
+                <tr>
+                    <td>{{ record.training_title }}</td>
+                    <td>{{ record.employee_name }}</td>
+                    <td>{{ record.training_date|date:"M d, Y" }}</td>
+                    <td>{{ record.training_duration }} hrs</td>
+                    <td>
+                        <span class="status-badge status-{{ record.training_status|lower }}">
+                            {{ record.training_status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <h3>No training records yet</h3>
+            <p>Create your first employee training record.</p>
+
+            <a href="{% url 'training_create' %}" class="btn btn-primary">
+                Add Training
+            </a>
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Training | Training Hub{% endblock %}
+
+{% block page_heading %}Delete Training Record{% endblock %}
+
+{% block content %}
+
+<section class="panel delete-panel">
+
+    <div class="delete-icon">!</div>
+
+    <h2>Confirm Deletion</h2>
+
+    <p>
+        Are you sure you want to delete this training record?
+    </p>
+
+    <div class="delete-details">
+        <strong>{{ record.training_title }}</strong>
+        <p>Employee: {{ record.employee_name }}</p>
+        <p>Date: {{ record.training_date|date:"M d, Y" }}</p>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-actions">
+
+            <button type="submit" class="btn btn-danger">
+                Yes, Delete
+            </button>
+
+            <a href="{% url 'training_list' %}" class="btn btn-outline">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

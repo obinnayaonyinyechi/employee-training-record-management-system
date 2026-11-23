@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Training Records | Training Hub{% endblock %}
+
+{% block page_heading %}Training Records{% endblock %}
+
+{% block content %}
+
+<section class="panel">
+
+    <div class="panel-header">
+        <div>
+            <h2>Employee Training Records</h2>
+            <p>Search and manage training activities</p>
+        </div>
+    </div>
+
+    <form method="GET" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search employee or training..."
+            value="{{ search_query }}"
+            class="form-control"
+        >
+
+        <select name="status" class="form-control">
+            <option value="">All Statuses</option>
+
+            {% for value, label in status_choices %}
+                <option
+                    value="{{ value }}"
+                    {% if status_filter == value %}selected{% endif %}
+                >
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-primary">
+            Search
+        </button>
+
+        <a href="{% url 'training_list' %}" class="btn btn-outline">
+            Reset
+        </a>
+
+    </form>
+
+    {% if records %}
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Training Title</th>
+                    <th>Employee</th>
+                    <th>Date</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.training_title }}</td>
+                    <td>{{ record.employee_name }}</td>
+                    <td>{{ record.training_date|date:"M d, Y" }}</td>
+                    <td>{{ record.training_duration }} hrs</td>
+
+                    <td>
+                        <span class="status-badge status-{{ record.training_status|lower }}">
+                            {{ record.training_status }}
+                        </span>
+                    </td>
+
+                    <td class="action-cell">
+
+                        <a
+                            href="{% url 'training_update' record.pk %}"
+                            class="action-link edit-link"
+                        >
+                            Edit
+                        </a>
+
+                        <a
+                            href="{% url 'training_delete' record.pk %}"
+                            class="action-link delete-link"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <h3>No records found</h3>
+            <p>Try another search or add a new training record.</p>
+
+            <a href="{% url 'training_create' %}" class="btn btn-primary">
+                Add Training
+            </a>
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

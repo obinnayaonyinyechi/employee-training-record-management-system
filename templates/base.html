@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Employee Training System{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">ET</div>
+            <div>
+                <h2>Training Hub</h2>
+                <small>Employee Management</small>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{% url 'dashboard' %}" class="nav-link">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="{% url 'training_list' %}" class="nav-link">
+                <span>▤</span> Training Records
+            </a>
+
+            <a href="{% url 'training_create' %}" class="nav-link">
+                <span>＋</span> Add Training
+            </a>
+
+            <a href="/admin/" class="nav-link">
+                <span>⚙</span> Admin Panel
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p>Employee Training</p>
+            <small>Management System</small>
+        </div>
+    </div>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h1>{% block page_heading %}Dashboard{% endblock %}</h1>
+                <p>Manage employee learning and development.</p>
+            </div>
+
+            <a href="{% url 'training_create' %}" class="btn btn-primary">
+                + New Training
+            </a>
+        </header>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</body>
+</html>
